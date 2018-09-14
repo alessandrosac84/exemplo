@@ -1,0 +1,97 @@
+SELECT row_number() OVER (ORDER BY qr.questao, qor.ordem_resposta) AS id,
+	f.matricula 		AS funcionario_matricula,
+	f.nome 			AS funcionario_nome,
+	qr.questionario  	AS questionario_id,
+	qr.questao 	 	AS questao_id,
+	q.titulo	 	AS questao_titulo,
+	q.tipo_questao	 	AS questao_tipo,
+	q.quantidade_resposta	AS questao_qtd_resposta,
+	qr.justificativa 	AS justificativa,
+	qo.descricao		AS questao_opcao_descricao,
+	qo.detalhe		AS questao_opcao_detalhe,
+	qor.questao_opcao	AS questao_opcao,
+	qor.ordem_resposta	AS ordem_resposta
+ FROM questionario_funcionario qf
+INNER JOIN questao_resposta qr ON qf.questionario = qr.questionario AND qf.funcionario = qr.funcionario
+INNER JOIN questao q ON q.id = qr.questao
+ LEFT JOIN questao_opcao_resposta qor ON qor.questionario = qr.questionario AND qor.questao = qr.questao AND qor.funcionario = qr.funcionario
+ LEFT JOIN questao_opcao qo ON q.id = qo.questao AND qo.id = qor.questao_opcao 
+ LEFT JOIN funcionario f ON f.matricula = qf.funcionario;
+
+
+
+
+
+WHERE qf.funcionario = 'f771274' AND qf.questionario = 59;
+
+
+
+
+
+
+
+
+SELECT row_number() OVER (ORDER BY at.id, ga.id, av.id) AS id,
+    at.id AS ativo_id,
+    at.nome AS ativo_nome,
+    ga.id AS grupo_id,
+    ga.descricao AS grupo_nome,
+    av.id AS atividade_id,
+    av.nome AS atividade_nome,
+    ca.rating AS rating_ativo,
+    ra.rating AS rating_funcionario,
+    ra.funcionario AS matricula,
+    f.nome
+   FROM ativo at
+     JOIN conhecimento_ativo ca ON at.id = ca.ativo AND at.situacao_ativo = true
+     JOIN rating_atividade ra ON ca.atividade = ra.atividade
+     JOIN atividade av ON av.id = ra.atividade
+     JOIN subgrupo_atividade sa ON av.subgrupo = sa.id
+     JOIN grupo_atividade ga ON ga.id = sa.grupo
+     JOIN funcionario f ON f.matricula = ra.funcionario
+     JOIN ativo_funcionario af ON af.ativo = at.id;
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+QUERY UTILIZADA NA VIEW FUNCIONARIO_ATIVO_CONHECIMENTO
+
+SELECT row_number() OVER (ORDER BY at.id, af.funcionario) AS id, 
+	at.id AS ativo_id,
+	af.funcionario AS matricula,
+	f.nome AS nome,
+	av.id AS atividade_id,
+	av.nome AS atividade_nome,
+	ca.rating AS rating_ativo,
+	ra.rating AS rating_funcionario
+	FROM ativo at
+	JOIN ativo_funcionario af ON af.ativo = at.id
+	JOIN funcionario f ON f.matricula = af.funcionario
+	JOIN conhecimento_ativo ca ON at.id = ca.ativo
+	JOIN atividade av ON av.id = ca.atividade
+	LEFT JOIN rating_atividade ra ON ra.atividade = av.id AND ra.funcionario = f.matricula where at.id = 845;
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+SELECT 
+f.matricula as matricula,
+f.nome as nome_funcionario,
+tf.autorizado as autorizado,
+tf.confirmado as confirmardo,
+t.nome as turma,
+t.treinamento as treinamento,
+t.data_inicio as data_inicio,
+t.data_termino as data_termino
+FROM turma_funcionario AS tf
+JOIN funcionario f ON f.matricula = tf.funcionario
+JOIN turma t ON t.id = tf.turma
+JOIN coordenacao c ON c.id = f.coordenacao AND c.coordenador = 'c055715'
+
+
+	@NamedQuery(name="TurmaFuncionario.findAprovacaoByCoordenador", query="SELECT t FROM TurmaFuncionario t JOIN t.funcionario f ON t.funcionario = f.matricula JOIN f.coordenacao c ON c.id = f.coordenacao AND c.coordenador = :matricula")
+
+
+	PrincipalThreadLocal.USER.get().getUsername()

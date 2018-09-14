@@ -1,0 +1,264 @@
+Integração Contínua usando Docker + Jenkins + Nexus + Sonar 
+
+Step-by-step guide
+Add the steps involved:
+Criar um projeto usando Maven
+Versionar o projeto usando Git
+Configurar o projeto no Jenkins
+Disponibilizar os binários no repositório Nexus
+Verificar a qualidade do código usando Sonar
+
+1 - Criar um projeto usando Maven
+1.1 - No Eclipse
+File -> New -> Maven Project
+Create a simple project (skip archetype selection).
+1.2 - No Console
+mvn archtetype:generate 
+ou
+mvn archetype:generate -DgroupId={project-packaging}  -DartifactId={project-name} -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+2 - Versionar o projeto usando Git
+2.1 - Criar um repositório no GitHub
+Repositories → New
+2.2 - Criar um repositório para o projeto
+cd {project-name}
+git init .
+git add .
+git commit -m "Initial Commit"
+git add remote origin {repository-url}
+git push --set-upstream origin master
+
+3 - Configurar o projeto no Jenkins
+3.1 - Instalar o Jenkins
+O Jenkins pode ser instalado de duas formas.
+Nativamente de acordo com o sistema operacional.
+Deploy de um .war.
+3.1.1 - No Windows
+
+3.1.2 - No Linux
+wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo bash
+echo "deb http://pkg.jenkins-ci.org/debian binary/" >> /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install jenkins
+
+3.1.3 - Via war
+Acessar o tomcat ou outro servidor web. 
+http://localhost:8080/
+Manager App
+
+WAR file to deploy → Escolher arquivo
+
+
+3.1.4 - Via Docker
+docker run -p 8080:8080 -p 50000:50000 jenkins
+
+3.2 - Configurar Segurança no Jenkins
+Gerenciar Jenkins
+
+Configurar segurança global
+
+Habilitar segurança
+→ Base de dados interna do Jenkins
+→  Segurança baseada em matriz
+
+Usuário/grupo para adicionar "admin" → Adicionar
+
+Dê permissão total para o usuário admin e permissão de leitura para o usuário Anônimo.
+
+Salvar
+
+Criar uma nova conta
+
+Registrar
+
+
+3.3 - Atualizando os plugins
+Gerenciar o Jenkins → Gerenciar plugins
+
+Selecionar Todos → Baixar agora, instalar e depois reiniciar
+
+3.4 - Instalar o Git plugin
+Disponíveis → Git plugin → Instalar sem reiniciar
+
+
+3.5 - Instalar o Git no Jenkins
+Gerenciar o Jenkins → Configurar o sistema
+
+Git → Instalar automaticamente
+Salvar
+
+3.6 - Instalar o Maven no Jenkins
+
+Adicionar Maven
+
+Nome: Maven 3.3.9
+Instalar automaticamente
+Salvar
+
+3.7 - Configurar novo job
+Novo job
+
+Nome do job: {project-name}
+Construir um projeto maven
+OK
+
+Descartar builds antigos
+Maximo de buils para manter "10"
+
+Git
+Repository URL {project-url}
+
+Consultar periodicamente o SCM
+Agenda "* * * * *"
+
+Construir
+Metas e opções "clean package install"
+
+Adicionar ação de pós-build → Arquivar os artefatos
+
+Arquivar os artefatos
+Arquivos para arquivar "target/*.jar"
+Salvar
+
+Construir agora
+
+
+4 - Disponibilizar os binários no repositório Nexus
+4.1 - Instalar o Nexus
+Para instalar o Nexus basta baixar o arquivo .zip para windows ou .tar.gz para Linux e Mac OS e seguir os passos específicos de cada plataforma.
+4.1.1 - No Windows
+Descompacte o arquivo .zip na pasta dos arquivos de programas.
+Serão criadas duas pastas.
+nexus-2.12.1-01
+sonatype-work
+cd nexus-2.12.1-01\bin
+nexus.bat console
+Acesse: http://localhost:8081/nexus/#welcome
+
+4.1.2 - No Linux
+cp nexus-2.12.1-01-bundle.tar.gz /usr/local
+cd /usr/local
+sudo tar xvzf nexus-2.12.1-01-bundle.tar.gz
+sudo ln -s nexus-2.12.1-01 nexus
+./bin/nexus console
+4.1.3 - No Docker
+docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
+4.2 - Configurar usuário no Nexus
+Login
+
+Username: admin
+Password: admin123
+
+Security → Users
+
+Add → Nexus User
+
+Preencha com os dados do usuário.
+Adicione a role "Nexus Administrator Role"
+
+4.3 - Configurar repositório no projeto
+Para que o projeto saiba onde deve armazenar os jars, o arquivo pom.xml do projeto deve ser alterado.
+
+    
+        thirdparty
+        http://192.168.99.100:8081/content/repositories/thirdparty
+    
+    
+        releases
+        http://192.168.99.100:8081/content/repositories/releases
+    
+    
+        snapshots
+        http://192.168.99.100:8081/content/repositories/snapshots
+    
+
+    
+    
+        false
+        releases
+        Releases
+        http://192.168.99.100:8081/content/repositories/releases
+    
+    
+    
+        true
+        snapshots
+        Snapshots
+        http://192.168.99.100:8081/content/repositories/snapshots
+    
+
+4.4 - Configurar repositório no Maven
+cd $JENKINS_HOME/tools/hudson.tasks.Maven_MavenInstallation/Maven_3.3.9
+vi conf/settings.xml
+
+    releases
+    silvionetto
+    cpqi@123
+
+    snapshots
+    silvionetto
+    cpqi@123
+4.5 - Configurar deploy no Jenkins
+projeto → Configurar
+
+Construir → Metas e opções "clean package install deploy"
+
+Verificar no Nexus
+
+
+5 - Verificar a qualidade do código usando Sonar
+5.1 - Instalar o SonarQube
+5.1.1 - No Windows
+Baixar e descompactar o SonarQube.
+# On Windows, execute:
+C:\sonarqube\bin\windows-x86-xx\StartSonar.bat
+5.1.2 - No Linux
+Baixar e descompactar o SonarQube.
+# On other operating system, execute:
+/etc/sonarqube/bin/[OS]/sonar.sh console
+5.1.3 - No Docker
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:5.1
+
+5.2 - Logar
+Login: admin
+Password: admin
+
+5.3 - Configurar o Maven
+cd $JENKINS_HOME
+vi conf/settings.xml
+
+    
+        org.sonarsource.scanner.maven
+    
+    
+        
+            sonar
+            
+                true
+            
+            
+                
+                
+                    http://localhost:9000
+                
+                
+                    jdbc:h2:tcp://localhost/sonar
+                
+            
+        
+    
+5.4 - Configurar o projeto
+Incluir no pom.xml do projeto.
+
+    
+        
+            
+                org.sonarsource.scanner.maven
+                sonar-maven-plugin
+                3.0.1
+            
+        
+    
+Incluir no goal do projeto
+sonar:sonar

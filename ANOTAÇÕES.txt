@@ -1,0 +1,474 @@
+ANOTAÇÕES:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@Valid - valida o beanValidation (todos os campos do entity e suas anotações. EX: NotNull)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+BOWER - Gerenciador de dependencias do JavaScript
+INSTALAR BOWER: npm i -g bower
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CASO DE O ERRO ABAIXO:
+npm ERR! missing script: start
+
+DEVE-SE:
+Definir no package.json o parametro START.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSTALA O GULP
+
+npm i -g gulp
+
+RODA O GULP
+
+gulp
+
+INICIA SERVER GULP
+
+gulp serve
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+QUANDO efetuar alteração nos nomes de classes no projeto java, para evitar problemas na hora do commit efetuar CLEANUP no projeto. Botão Direito - TEAM - CLEANUP
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+track by .id - Serve para não deixar o combo recaregar a cada mudança de opção
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*** TEMPLATES QUE FUNCIONAM ***
+
+- BLUR ADMIN: Funciona com Gulp
+- ANGULAR SEED MASTER: Funciona com Npm Start
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ W3C - Não valida CSS. Para o SIFLX deve haver problemas no CSS de (position) fixa ou tag (absolute). VERIFICAR
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*** EMAIL PARA ROBSON ***
+
+Robson boa tarde, 
+
+Segue caminho do documento de Avaliação do atendimento.
+
+Z:\2017_Entregas\bloquetoExpresso\24-10-2017\RA_RTC_2558779_102017_BOLETO_EXPRESSO.doc
+
+Qualquer duvida estou a disposição.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+***ENTREGA DE RTC***
+
+ À CEDESSP054, 
+
+segue caminho do relatório de atendimento: \QUALIDADE_SP\SAI - Analise e Design e Implementacao\Suporte a Plataforma Aberta\2017\SIGOV\1948257\RA_1948257_062017_SIGOV.doc
+
+Atenciosamente
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+***SIGSJ***
+
+Servidor de DES: connectar via ssh
+sspdeapllx0039
+10.116.88.96
+https://10.116.82.168/boletoService/boleto
+
+Servidor de TQS: connectar via ssh
+ssptqapllx0029
+
+
+Servidor de TQS
+10.116.24.68
+ 
+
+
+Jboss 5.1 	
+SSPTQAPRLX0007  	10.116.18.36		https://10.116.18.36:8005/sigsj_intranet		10.116.24.68	
+SSPTQAPRLX0022		10.116.18.51		https://10.116.18.51:8006/sigsj_internet		10.116.24.68	
+
+
+
+
+10.116.82.168/boletoService/boleto
+10.116.88.96
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JBOSS - ANOTAÇÕES
+
+- Se servidor apache (web) - conectar via putt pelo caminho da URL de deploy e:
+Acessar a pasta:
+cd /opt/apache/2.2/etc/conf.d/
+Ler o arquivo (less) 
+less workers.properties
+Identificar o projeto e servidor para verificar o endereço da máquina
+Usar FIND com o comando /OQUE_SERA_PESQUISADO
+Usar comando N para passar para o proximo registro encontrado da pesquisa
+
+Pegar nome do servidor conforme exemplo:
+worker.sigsj02.host=sspdeapllx0039
+Apos isso acessar o nome do servidor via ssh: Ex: ssh sspdeapllx0039
+
+
+
+
+-Acessar a pasta server/servidor_em_questao_/log e ler o arquivo (less) boot.log
+cd /opt/jboss/jboss-5.1.0.GA/server/sigsj_inter02/log/
+
+
+
+-Para efetuar download de qualquer arquivo do servidor - Conectar via WINSCP e acessar o servidor em questão.
+Se for fazer download do .ear acessar:
+/opt/jboss/JBOSS_EM_QUESTAO/server/SISTEMA_EM_QUESTAO/deployapp
+
+
+
+- PARAMETRO DE INTERFACE GRAFICA DO LINUX - UTILIZADO QUANDO OCOORRE O ERRO DE: Caused by: java.lang.NoClassDefFoundError: Could not initialize class sun.awt.X11.XToolkit
+Djava.awt.headless=true
+
+
+
+- JBoss 5.1 and 6.1
+Run jboss_home\bin\run.bat to start it.
+Run jboss_home\bin\shutdown.bat -S to stop it.
+
+
+
+- PARA DEPLOY Copiar o arquivo EAR para a pasta HOME via WINSCP 
+
+- COMANDO PARA DEPLOY:
+sudo -S -u jboss4 /opt/jboss/jboss-5.1.0.GA/jboss.sh $INSTANCIA deploy $NOMEDOPACOTE 
+
+
+- NA PASTA /opt/jboss/jboss-5.1.0.GA/server/sigsj_inter02/log
+Utilizar o comando: 
+tail -f console.log 
+para acompanhar o log da subida
+
+
+
+- COMANDO SCP:
+
+scp USER@IP_DA_MAQUINA_ORIGEM:/PASTA_ORIGEM/ARQUIVO USER@IP_DA_MAQUINA_DESTINO:/PASTA_DESTINO/
+
+
+- NA PASTA conf.d
+ler o arquivo sigsj-inter.conf para identificar o caminho da URL que está sendo utilizada para a aplicação.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SONAR LOGIN
+
+admin
+C@ixaSonar123
+
+
+
+GIT LOGIN
+
+inovacao-usr
+GitInovacao17
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+http://10.1.32.242:8321/sonarqube-webhook/
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GITLAB - CAIXA: http://10.116.98.23/
+
+JENKINSFILE / INOVACAO / jenkinsman-api-conf
+
+
+
+JENKINS: https://10.1.32.242:8443
+
+
+SONAR: http://10.1.32.242:9000/projects
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Para incluir uma rota no TypeScript:
+
+Criar Pacote da Pagina com os arquivos:
+	tela.Html
+	tela.component.ts
+	tela.component.scss
+
+No arquivo app-routes.module.ts
+	Importar o component que será roteado.
+	Criar novo Path de Rota conforme exemplo:
+		{
+			path: 'jmw-log', 			/*O nome do Path deve ser o mesmo declarado como SELECTOR no arquivo.component.ts*/
+			component: LogComponent,	/*O nome do component deve ser o mesmo do Class exportado no arquivo.component.ts*/
+			children: []
+		}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comando para registrar o endereço do NPM local
+
+
+	npm config set registry http://10.6.32.101:5080
+     NOVO:registry=http://binario.caixa:8081/repository/npm-all
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Icones para menu Angular 4
+
+          <p><i class="fa fa-camera-retro"></i>Teste</p>
+          <p><i class="fa fa-book"></i>Teste</p>
+          <p><i class="fa fa-pencil"></i>Teste</p>
+          <p><i class="fa fa-cog"></i>Teste</p>
+          <p><i class="fa fa-check-square"></i>Teste</p>
+          <p><i class="fa fa-spinner"></i>Teste</p>
+          <p><i class="fa fa-square"></i>Teste</p>
+          <p><i class="fa fa-circle-o-notch"></i>Teste</p>
+          <p><i class="fa fa-refresh"></i>Teste</p>
+          <p><i class="fa fa-shield"></i>Teste</p>
+          <p><i class="fa fa-twitter"></i>Teste</p>
+          <p><i class="fa fa-trash"></i>Teste</p>
+          <p><i class="fa fa-upload"></i>Teste</p>
+          <p><i class="fa fa-download"></i>Teste</p>
+          <p><i class="fa fa-ban"></i>Teste</p>
+          <p><i class="fa fa-shopping-cart"></i>Teste</p>
+          <p><i class="fa fa-battery-half"></i>Teste</p>
+          <p><i class="fa fa-car"></i>Teste</p>
+          <p><i class="fa fa-spinner fa-spin"></i>Teste</p> 	
+
+
+PARA MAIS ICONES: https://www.w3schools.com/icons/fontawesome_icons_brand.asp
+
+**fa-spin adiciona movimento de rotação
+**fa-pulse adicionar movimento de rotação e seguimentação
+**fa-rotate-90 gira imagem do icone
+**fa-inverse muda fundo para preto
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SONDA - PLUS
+Login: CPF
+Senha: ale300384 - nova senha: ale@300384
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*** EXEMPLO DE COMO LER UM JSON DO DIRETORIO DO PROJETO ***
+
+EXEMPLO DE CHAMADA NO CONTROLLER
+
+this.jenkinsService.getJSON().subscribe(data => {
+      this.listaCommits = data;
+    });
+
+EXEMPLO DE METODO NO SERVICE
+
+getJSON(): Observable<any> {
+    return this.http.get('../../../assets/files/commits.json')
+      .map((response: Response) => {
+        const data = response;
+        return data;
+      });
+  }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  <button type="button" class="btn btn-success btn-sm" (click)="open(content, build.number, build.result)">Visualizar Log</button>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  Gerar novo Componente
+ng generate component pages/dev
+ng generate component pages/tqs
+
+
+Gerar Module e Routing para um novo componente
+ng g m --routing pages/initial
+ng generate component pages/sonar
+
+
+ROUTING
+
+ {
+    path: 'dev',
+    component: DevComponent,
+    children: []
+  },
+  {
+    path: 'tqs',
+    component: TqsComponent,
+    children: []
+  }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JBOSS: - Criar deploy do zero.
+
+Clonar profile (Neste caso clonei o JenkinsMan)
+Rever o DataSource
+Rever o Security
+
+Criar o ServerGroup
+Criar o Server
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Gerar WAR do projeto API --
+
+Run As: Maven Clean
+Run As: Maven Install - o pacote sera gerado dentro da pasta Target
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JBOSS DEV:
+10.116.82.91
+10.116.82.91:9990 (console)
+usuario: admin
+senha: desenv
+
+JBOSS PROD:
+10.1.32.240
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Buscar dados de um Json em pasta local
+
+***COMPONENT***
+ this.jenkinsService.getJSON().subscribe(data => {
+      this.listaCommits = data;
+    });
+
+***SERVICE***
+getJSON(): Observable<any> {
+    return this.http.get('../../../assets/files/commits.json')
+      .map((response: Response) => {
+        const data = response;
+        return data;
+      });
+  }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+     jobs.forEach(job -> {
+               Job j = new Job();
+               j.setId(new JobPK());
+               j.getId().setId(job.getName());
+               j.getId().setWallet(project.getId().getWallet());
+               j.getId().setProject(project.getId().getId());
+               j.setProject(project);
+               j.setName(job.getDisplayName());
+               j.setCreatedAt(Calendar.getInstance());
+               j.setUserInsert(SKYNET_USER);
+               if (jobService.findById(j.getId()) == null) {
+                    jobService.save(j);
+               }
+               checkBuilds(j);
+          });
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TELAS CONTINUOS MANAGER
+
+Para a tela de DEV Manager funcionar deve ser colocado: JsonIgnore no campo ChangeSets da Classe build e retirado o JsonIgnore do campo build na Classe ChangeSets.
+
+Porém essa alteração faz para a tela de log.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+COMANDOS JENKINS VIA COMMAND LINE
+
+The below commands worked for me in Redhat, and should work for Ubuntu also.
+
+To know the status of Jenkins:
+
+sudo service jenkins status
+To start the Jenkins:
+
+sudo service jenkins start
+To stop the Jenkins:
+
+sudo service jenkins stop
+To restart the Jenkins:
+
+sudo service jenkins restart
+Demo on command prompt:
+
+[root@varunHome]# sudo service jenkins status
+jenkins (pid  7468) is running...
+
+[root@varunHome]# sudo service jenkins stop
+Shutting down Jenkins               [  OK  ]
+
+[root@varunHome]# sudo service jenkins start
+Starting Jenkins                    [  OK  ]
+
+[root@varunHome]# sudo service jenkins restart
+Shutting down Jenkins               [  OK  ]
+
+Starting Jenkins                    [  OK  ]
+[root@varunHome]# 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+RTC 4306851 
+
+FLAVIO RAMAL: 8680
+
+
+LIGAR PARA FLAVIO SIATS RTC_4420187
+
+Foi solicitado os logs no dia da reunião e ate agora não recebemos nada.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Usuário de Teste
+c897855 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GET api/components/search
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ATIVIDADES
+
+-Resource de Servidores e Instancias - Obter lista - utilizar tipo de aplicação como parametro. - OK  - (exemplo de chamada está no arquivo log.component.ts)
+-Criar consulta ao LDAP para funcionarios Fábrica - email, chave, nome
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+server_type IN ('JENKINS, 'SONAR, 'GITLAB, 'SHAREPOINT', 'LDAP')
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ServerRepository
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TESTE EXCEPTION
+
+    //Mockito.when(sharepointService.getFuncionario(Mockito.anyString())).thenThrow(new BadRequestException("Erro"));
+
+
+
+    {java.naming.provider.url=ldap://corp.caixa.gov.br:3268, java.naming.factory.initial=com.sun.jndi.ldap.LdapCtxFactory, java.naming.security.principal=65468, java.naming.security.authentication=simple, java.naming.security.credentials=4564654, java.naming.ldap.attributes.binary=objectSID}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    FLEX LAYOUT
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    TOKEN GITLAB
+
+    fXJXM7vC7XKL9noQs9-Q

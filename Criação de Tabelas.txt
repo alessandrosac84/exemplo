@@ -1,0 +1,108 @@
+
+/* CRIAR TABELA URL*/
+
+CREATE TABLE url
+(
+  id serial unique NOT NULL,
+  url character varying (100) NOT NULL, 
+  metodo character varying (10) CHECK (metodo = 'GET' OR metodo = 'PUT' OR metodo = 'POST' OR metodo = 'DELETE'),
+  CONSTRAINT url_pkey PRIMARY KEY (id)
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* CRIAR TABELA URL_FUNCIONALIDADE*/
+
+CREATE TABLE url_funcionalidade
+(
+  id serial unique NOT NULL,
+  url integer NOT NULL, 
+  funcionalidade integer NOT NULL,
+  timestamp_inclusao timestamp without time zone NOT NULL DEFAULT now(),
+  usuario_inclusao character(7) NOT NULL,
+  timestamp_alteracao timestamp without time zone,
+  usuario_alteracao character(7),
+  CONSTRAINT url_funcionalidade_pkey PRIMARY KEY (id),
+  CONSTRAINT funcionalidade_fk FOREIGN KEY (funcionalidade)
+      REFERENCES funcionalidade (id),
+  CONSTRAINT url_fk FOREIGN KEY (url)
+      REFERENCES url (id)
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* CRIAR TABELA PERFIL_FUNCIONALIDADE*/
+
+CREATE TABLE perfil_funcionalidade
+(
+  id serial unique NOT NULL,
+  tipo_funcionario character varying(20) NOT NULL,
+  funcionalidade integer NOT NULL,
+  timestamp_inclusao timestamp without time zone NOT NULL DEFAULT now(),
+  usuario_inclusao character(7) NOT NULL,
+  timestamp_alteracao timestamp without time zone,
+  usuario_alteracao character(7),
+  CONSTRAINT perfil_funcionalidade_pkey PRIMARY KEY (id),
+  CONSTRAINT funcionalidade_fk FOREIGN KEY (funcionalidade)
+      REFERENCES funcionalidade (id),
+  CONSTRAINT tipo_funcionario_fk FOREIGN KEY (tipo_funcionario)
+      REFERENCES tipo_funcionario (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* CRIAR TABELA FUNCIONARIO_FUNCIONALIDADE*/
+
+CREATE TABLE funcionario_funcionalidade
+(
+  id serial unique NOT NULL,
+  funcionario character(7) NOT NULL,
+  funcionalidade integer NOT NULL,
+  timestamp_inclusao timestamp without time zone NOT NULL DEFAULT now(),
+  usuario_inclusao character(7) NOT NULL,
+  timestamp_alteracao timestamp without time zone,
+  usuario_alteracao character(7),
+  CONSTRAINT funcionario_funcionalidade_pkey PRIMARY KEY (id),
+  CONSTRAINT funcionario_fk FOREIGN KEY (funcionario)
+      REFERENCES funcionario (matricula),
+  CONSTRAINT funcionalidade_fk FOREIGN KEY (funcionalidade)
+      REFERENCES funcionalidade (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* CRIAR TABELA PERFIL_CARGO*/
+
+CREATE TABLE perfil_cargo
+(
+  id serial unique NOT NULL, 
+  perfil character varying(20) NOT NULL,
+  desc_perfil character varying(45) NOT NULL,
+  cargo integer NOT NULL, 
+  desc_cargo character varying(50) NOT NULL,
+  timestamp_inclusao timestamp without time zone NOT NULL DEFAULT now(),
+  usuario_inclusao character(7) NOT NULL,
+  timestamp_alteracao timestamp without time zone,
+  usuario_alteracao character(7),
+  CONSTRAINT perfil_cargo_pkey PRIMARY KEY (id),
+  CONSTRAINT perfil_fk FOREIGN KEY (perfil) REFERENCES tipo_funcionario (id),
+  CONSTRAINT cargo_fk FOREIGN KEY (cargo) REFERENCES cargo_funcionario (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* DELETAR COLUNA DA TABELA*/
+
+ALTER TABLE perfil_cargo
+DROP COLUMN desc_cargo;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
